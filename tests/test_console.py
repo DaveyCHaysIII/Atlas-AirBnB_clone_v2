@@ -80,5 +80,6 @@ class TestHBNBConsole(unittest.TestCase):
         mock_storage._FileStorage__objects['Place.2'] = Place(id='2')
         self.assertEqual(self.cmd.do_count(), 2)
 
+
 if __name__ == '__main__':
     unittest.main()
