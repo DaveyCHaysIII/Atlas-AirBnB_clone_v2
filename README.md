@@ -1,6 +1,6 @@
-<center> <h1>HBNB - The Console</h1> </center>
+<center> <h1>HBNB - Console and Storage</h1> </center>
 
-This repository contains the initial stage of a student project to build a clone of the AirBnB website. This stage implements a backend interface, or console, to manage program data. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Using a system of JSON serialization/deserialization, storage is persistent between sessions.
+This repository contains the second stage of a student project to build a clone of the AirBnB website. This stage builds from a backend console and adds a more robust database storage system using SQLAlchemy. Console commands allow the user to create, update, and destroy objects, as well as manage file storage. Original implementation uses a system of JSON serialization/deserialization, storage is persistent between sessions. Added database sotrage implementation leverages SQLAlchemy to implement SQL database tables for persistent storage and object-relational-mapping. 
 
 ---
 
