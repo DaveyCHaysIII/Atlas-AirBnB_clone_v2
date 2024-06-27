@@ -25,7 +25,6 @@ class TestHBNBConsole(unittest.TestCase):
     def setUpClass(cls):
         cls.cmd = HBNBCommand()
         cls.storage_mock = MagicMock(spec=BaseModel)
-        cls.storage_mock.all.return_value = {}
         cls.storage_mock.save.return_value = None
 
     """
