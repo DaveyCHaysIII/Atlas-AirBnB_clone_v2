@@ -9,7 +9,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from models import FileStorage
+from models import storage
 from console import HBNBCommand
 
 
@@ -20,7 +20,7 @@ class TestHBNBCommand(unittest.TestCase):
         # Initialize the console command
         cls.cmd = HBNBCommand()
         # Mock the storage module to avoid persisting changes to disk
-        cls.mock_storage = MagicMock(spec=FileStorage)
+        cls.mock_storage = MagicMock(spec=storage)
         cls.mock_storage.save.return_value = None
 
     def tearDown(self):
