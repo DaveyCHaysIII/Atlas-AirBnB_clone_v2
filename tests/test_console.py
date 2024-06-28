@@ -45,7 +45,8 @@ class TestHBNBCommand(unittest.TestCase):
         """
         # Setup: Mock the storage to simulate existing instances
         mock_storage._FileStorage__objects.clear()
-        mock_storage._FileStorage__objects['User.1'] = User(id='1', name='test_user')
+        mock_storage._FileStorage__objects['User.1'] = User(
+            id='1', name='test_user')
         # Action: Call the do_show command
         result = self.cmd.onecmd("show User 1")
         # Assert: Verify that the output matches the expected instance details
@@ -59,7 +60,8 @@ class TestHBNBCommand(unittest.TestCase):
         """
         # Setup: Mock the storage to simulate existing instances
         mock_storage._FileStorage__objects.clear()
-        mock_storage._FileStorage__objects['User.1'] = User(id='1', name='test_user')
+        mock_storage._FileStorage__objects['User.1'] = User(
+            id='1', name='test_user')
         # Action: Call the do_destroy command
         self.cmd.onecmd("destroy User 1")
         # Assert: Verify that the instance was removed from storage
@@ -72,12 +74,15 @@ class TestHBNBCommand(unittest.TestCase):
         """
         # Setup: Mock the storage to simulate multiple instances
         mock_storage._FileStorage__objects.clear()
-        mock_storage._FileStorage__objects['User.1'] = User(id='1', name='test_user')
-        mock_storage._FileStorage__objects['User.2'] = User(id='2', name='another_test_user')
+        mock_storage._FileStorage__objects['User.1'] = User(
+            id='1', name='test_user')
+        mock_storage._FileStorage__objects['User.2'] = User(
+            id='2', name='another_test_user')
         # Action: Call the do_all command
         result = self.cmd.onecmd("all")
         # Assert: Verify that the output includes details for both instances
-        expected_output = "<User; id=1; name=\"test_user\">\n<User; id=2; name=\"another_test_user\">"
+        expected_output = """<User; id=1; name=\"test_user\">
+        <User; id=2; name=\"another_test_user\">"""
         self.assertEqual(result, expected_output)
 
     @patch('console.HBNBCommand.storage', new_callable=MagicMock)
@@ -87,8 +92,10 @@ class TestHBNBCommand(unittest.TestCase):
         """
         # Setup: Mock the storage to simulate multiple instances
         mock_storage._FileStorage__objects.clear()
-        mock_storage._FileStorage__objects['User.1'] = User(id='1', name='test_user')
-        mock_storage._FileStorage__objects['User.2'] = User(id='2', name='another_test_user')
+        mock_storage._FileStorage__objects['User.1'] = User(
+            id='1', name='test_user')
+        mock_storage._FileStorage__objects['User.2'] = User(
+            id='2', name='another_test_user')
         # Action: Call the do_count command
         result = self.cmd.onecmd("count User")
         # Assert: Verify that the output matches the number of instances
