@@ -19,7 +19,7 @@ class TestHBNBCommand(unittest.TestCase):
         # Initialize the console command
         cls.cmd = HBNBCommand()
         # Mock the storage module to avoid persisting changes to disk
-        cls.storage_mock = MagicMock(spec=storage)
+        cls.storage_mock = MagicMock(spec=FileStorage)
         cls.storage_mock.save.return_value = None
 
     @patch('console.HBNBCommand.storage', new_callable=MagicMock)
