@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import unittest
+from unittest.mock import MagicMock
 from models.base_model import BaseModel
 from models.user import User
 from models.place import Place
