@@ -1,6 +1,23 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+import os
+from models.amenity import Amenity
+from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+
+classes = {
+    "Amenity": Amenity,
+    "BaseModel": BaseModel,
+    "City": City,
+    "Place": Place,
+    "Review": Review,
+    "State": State,
+    "User": User}
 
 
 class FileStorage:
@@ -10,41 +27,33 @@ class FileStorage:
 
     def all(self):
         """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
-        """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        """Stores an object in objects"""
+        # format the key for instance storage
+        key = f"{obj.__class__.__name__}.{obj.id}"
+        # add the instance strings to the objects dictionary
+        self.__objects[key] = obj
 
     def save(self):
-        """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
-            json.dump(temp, f)
+        """serializes __objects to the JSON file specified in __file_path"""
+        # initialize an empty dictionar
+        obj_dict = {}
+        for k, v in self.__objects.items():
+            # convert and store instance strings as attribute dictionaries
+            obj_dict[k] = v.to_dict()
+            # open or create json file to store new dictionary
+        with open(self.__file_path, "w") as f:
+            json.dump(obj_dict, f)
 
     def reload(self):
         """Loads storage dictionary from file"""
-        from models.base_model import BaseModel
-        from models.user import User
-        from models.place import Place
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.review import Review
-
-        classes = {
-                    'BaseModel': BaseModel, 'User': User, 'Place': Place,
-                    'State': State, 'City': City, 'Amenity': Amenity,
-                    'Review': Review
-                  }
-        try:
-            temp = {}
-            with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
-                    self.all()[key] = classes[val['__class__']](**val)
-        except FileNotFoundError:
-            pass
+        # check the json file exists
+        if os.path.exists(self.__file_path):
+            with open(self.__file_path, "r", encoding="utf-8") as f:
+                 # Iterate over stored instances and their attribute dictionaries
+                for k, v in json.load(f).items():
+                    # pass attribute items as kwargs to initialize new instances
+                    # add instances to storage objects dictionary
+                    self.new(classes[v.get('__class__')](**v))
