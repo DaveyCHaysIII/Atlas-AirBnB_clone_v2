@@ -23,6 +23,7 @@ class TestHBNBCommand(unittest.TestCase):
         cls.storage_mock = MagicMock(spec=FileStorage)
         cls.storage_mock.save.return_value = None
 
+
 def tearDown(self):
     self.cmd.storage._FileStorage__objects.clear()
 
