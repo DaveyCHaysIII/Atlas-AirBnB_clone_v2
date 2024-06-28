@@ -31,16 +31,18 @@ class TestHBNBCommand(unittest.TestCase):
         """
         # Setup: Clear the mock storage to simulate creating a new instance
         self.cmd.mock_storage._FileStorage__objects.clear()
-        
+
         # Simulate creating a new User instance in the mock storage
-        self.cmd.mock_storage._FileStorage__objects['User.1'] = User(id='1', name='test_user')
-        
+        self.cmd.mock_storage._FileStorage__objects['User.1'] = User(
+            id='1', name='test_user')
+
         # Action: Call the do_create command
         self.cmd.onecmd("create User name=test_user")
-        
+
         # Assert: Verify that the new instance was added to storage
-        self.assertIn('User.1', self.cmd.mock_storage._FileStorage__objects.keys())
-        
+        self.assertIn(
+            'User.1', self.cmd.mock_storage._FileStorage__objects.keys())
+
         # Assert: Verify that the instance has the correct attributes
         user_instance = self.cmd.mock_storage._FileStorage__objects['User.1']
         self.assertEqual(user_instance.name, 'test_user')
@@ -53,10 +55,10 @@ class TestHBNBCommand(unittest.TestCase):
         self.cmd.mock_storage._FileStorage__objects.clear()
         self.cmd.mock_storage._FileStorage__objects['User.1'] = User(
             id='1', name='test_user')
-        
+
         # Action: Call the do_show command
         result = self.cmd.onecmd("show User 1")
-        
+
         # Assert: Verify that the output matches the expected instance details
         expected_output = "<User; id=1; name=\"test_user\">"
         self.assertEqual(result, expected_output)
@@ -69,12 +71,13 @@ class TestHBNBCommand(unittest.TestCase):
         self.cmd.mock_storage._FileStorage__objects.clear()
         self.cmd.mock_storage._FileStorage__objects['User.1'] = User(
             id='1', name='test_user')
-        
+
         # Action: Call the do_destroy command
         self.cmd.onecmd("destroy User 1")
-        
+
         # Assert: Verify that the instance was removed from storage
-        self.assertNotIn('User.1', self.cmd.mock_storage._FileStorage__objects.keys())
+        self.assertNotIn(
+            'User.1', self.cmd.mock_storage._FileStorage__objects.keys())
 
     def test_do_all(self):
         """
@@ -86,10 +89,10 @@ class TestHBNBCommand(unittest.TestCase):
             id='1', name='test_user')
         self.cmd.mock_storage._FileStorage__objects['User.2'] = User(
             id='2', name='another_test_user')
-        
+
         # Action: Call the do_all command
         result = self.cmd.onecmd("all")
-        
+
         # Assert: Verify that the output includes details for both instances
         expected_output = """<User; id=1; name=\"test_user\">
         <User; id=2; name=\"another_test_user\">"""
@@ -105,10 +108,10 @@ class TestHBNBCommand(unittest.TestCase):
             id='1', name='test_user')
         self.cmd.mock_storage._FileStorage__objects['User.2'] = User(
             id='2', name='another_test_user')
-        
+
         # Action: Call the do_count command
         result = self.cmd.onecmd("count User")
-        
+
         # Assert: Verify that the output matches the number of instances
         self.assertEqual(result, "2")
 
