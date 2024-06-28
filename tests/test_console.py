@@ -40,11 +40,10 @@ class TestHBNBCommand(unittest.TestCase):
             stored = storage.all()
             expected_key = f"User.{output}"
             self.assertIn(expected_key, stored)
-       
 
     def test_do_show(self):
         """
-            Test the do_show command to ensure it displays the correct instance.
+            Test the do_show command to ensure displays the correct instance.
         """
         with self.patch_stdout:
             # Run create User
