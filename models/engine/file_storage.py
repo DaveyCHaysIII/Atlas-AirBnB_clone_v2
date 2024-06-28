@@ -52,8 +52,6 @@ class FileStorage:
         # check the json file exists
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r", encoding="utf-8") as f:
-                 # Iterate over stored instances and their attribute dictionaries
+                # Iterate over stored instances and their attribute dictionaries
                 for k, v in json.load(f).items():
-                    # pass attribute items as kwargs to initialize new instances
-                    # add instances to storage objects dictionary
                     self.new(classes[v.get('__class__')](**v))
