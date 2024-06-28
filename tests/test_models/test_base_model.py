@@ -90,7 +90,7 @@ class test_basemodel(unittest.TestCase):
         """
         i = self.value()
         dictionary = i.to_dict()
-        self.assertEqual(dictionary["__class__"], "BaseModel")
+        self.assertEqual(dictionary["__class__"], i.__class__.__name__)
         self.assertEqual(dictionary["id"], i.id)
         self.assertEqual(dictionary["created_at"], i.created_at.isoformat())
         self.assertEqual(dictionary["updated_at"], i.updated_at.isoformat())
