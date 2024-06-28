@@ -1,14 +1,8 @@
 #!/usr/bin/python3
 
 import unittest
-from unittest.mock import MagicMock
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
+from unittest.mock import patch
+from io import StringIO
 from models import storage
 from console import HBNBCommand
 
@@ -16,105 +10,117 @@ from console import HBNBCommand
 class TestHBNBCommand(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    def setUp(self):
         # Initialize the console command
-        cls.cmd = HBNBCommand()
-        # Mock the storage module to avoid persisting changes to disk
-        cls.mock_storage = MagicMock(spec=storage)
-        cls.mock_storage.save.return_value = None
+        self.cmd = HBNBCommand()
+        # Capture sys.stdout for verifying test output
+        self.mock_stdout = StringIO()
+        self.patch_stdout = patch("sys.stdout", self.mock_stdout)
 
     def tearDown(self):
-        self.cmd.mock_storage._FileStorage__objects.clear()
+        # Close StringIO and stop output capture
+        self.patch_stdout.stop()
+        self.mock_stdout.close()
+        #  Clear FileStorage
+        storage._FileStorage__objects.clear()
 
     def test_do_create(self):
         """
-        Test the do_create command to ensure it creates a new instance.
+            Test the do_create command to ensure it creates a new instance.
         """
-        # Setup: Clear the mock storage to simulate creating a new instance
-        self.cmd.mock_storage._FileStorage__objects.clear()
 
-        # Simulate creating a new User instance in the mock storage
-        self.cmd.mock_storage._FileStorage__objects['User.1'] = User(
-            id='1', name='test_user')
+        with self.patch_stdout:
+            # Run create User
+            self.cmd.onecmd("create User")
+            output = self.mock_stdout.getvalue().strip()
+            # Check that captured output is not 0
+            self.assertTrue(len(output) > 0)
 
-        # Action: Call the do_create command
-        self.cmd.onecmd("create User name=test_user")
-
-        # Assert: Verify that the new instance was added to storage
-        self.assertIn(
-            'User.1', self.cmd.mock_storage._FileStorage__objects.keys())
-
-        # Assert: Verify that the instance has the correct attributes
-        user_instance = self.cmd.mock_storage._FileStorage__objects['User.1']
-        self.assertEqual(user_instance.name, 'test_user')
+            # Check storage for created User obj
+            stored = storage.all()
+            expected_key = f"User.{output}"
+            self.assertIn(expected_key, stored)
+       
 
     def test_do_show(self):
         """
-        Test the do_show command to ensure it displays the correct instance.
+            Test the do_show command to ensure it displays the correct instance.
         """
-        # Setup: Mock the storage to simulate existing instances
-        self.cmd.mock_storage._FileStorage__objects.clear()
-        self.cmd.mock_storage._FileStorage__objects['User.1'] = User(
-            id='1', name='test_user')
-
-        # Action: Call the do_show command
-        result = self.cmd.onecmd("show User 1")
-
-        # Assert: Verify that the output matches the expected instance details
-        expected_output = "<User; id=1; name=\"test_user\">"
-        self.assertEqual(result, expected_output)
+        with self.patch_stdout:
+            # Run create User
+            self.cmd.onecmd("create User")
+            # Capture id from output
+            cr_output = self.mock_stdout.getvalue().strip()
+            # Clear mock output buffer
+            self.mock_stdout.truncate(0)
+            self.mock_stdout.seek(0)
+            # Run show User and capture output
+            self.cmd.onecmd("show User " + cr_output)
+            sh_output = self.mock_stdout.getvalue().strip()
+            # Check that instance was found
+            self.assertFalse(sh_output == "** no instance found **")
 
     def test_do_destroy(self):
         """
-        Test the do_destroy command to ensure it removes an instance.
+            Test the do_destroy command to ensure it removes an instance.
         """
-        # Setup: Mock the storage to simulate existing instances
-        self.cmd.mock_storage._FileStorage__objects.clear()
-        self.cmd.mock_storage._FileStorage__objects['User.1'] = User(
-            id='1', name='test_user')
-
-        # Action: Call the do_destroy command
-        self.cmd.onecmd("destroy User 1")
-
-        # Assert: Verify that the instance was removed from storage
-        self.assertNotIn(
-            'User.1', self.cmd.mock_storage._FileStorage__objects.keys())
+        with self.patch_stdout:
+            # Run create User and capture id
+            self.cmd.onecmd("create User")
+            cr_output = self.mock_stdout.getvalue().strip()
+            # Run destroy User and clear mock output buffer
+            self.cmd.onecmd("destroy User " + cr_output)
+            self.mock_stdout.truncate(0)
+            self.mock_stdout.seek(0)
+            # Run show User with captured id
+            self.cmd.onecmd("show User " + cr_output)
+            # Capture output and check that no instance found
+            sh_output = self.mock_stdout.getvalue().strip()
+            self.assertTrue(sh_output == "** no instance found **")
 
     def test_do_all(self):
         """
-        Test the do_all command to ensure it lists all instances.
+            Test the do_all command to ensure it lists all instances.
         """
-        # Setup: Mock the storage to simulate multiple instances
-        self.cmd.mock_storage._FileStorage__objects.clear()
-        self.cmd.mock_storage._FileStorage__objects['User.1'] = User(
-            id='1', name='test_user')
-        self.cmd.mock_storage._FileStorage__objects['User.2'] = User(
-            id='2', name='another_test_user')
+        with self.patch_stdout:
+            # Run create User and capture id
+            self.cmd.onecmd("create User")
+            cr_output1 = self.mock_stdout.getvalue().strip()
+            # Clear mock output buffer
+            self.mock_stdout.truncate(0)
+            self.mock_stdout.seek(0)
 
-        # Action: Call the do_all command
-        result = self.cmd.onecmd("all")
+            # Run creat user anc capture second id
+            self.cmd.onecmd("create User")
+            cr_output2 = self.mock_stdout.getvalue().strip()
+            # Clear mock output buffer
+            self.mock_stdout.truncate(0)
+            self.mock_stdout.seek(0)
 
-        # Assert: Verify that the output includes details for both instances
-        expected_output = """<User; id=1; name=\"test_user\">
-        <User; id=2; name=\"another_test_user\">"""
-        self.assertEqual(result, expected_output)
+            # Run all User and capture output
+            self.cmd.onecmd("all User")
+            all_output = self.mock_stdout.getvalue().strip()
+
+            # Ensure captured ids are present in output
+            self.assertIn(f"[User] ({cr_output1})", all_output)
+            self.assertIn(f"[User] ({cr_output2})", all_output)
 
     def test_do_count(self):
         """
-        Test the do_count command to ensure it counts instances correctly.
+            Test the do_count command to ensure it counts instances correctly.
         """
-        # Setup: Mock the storage to simulate multiple instances
-        self.cmd.mock_storage._FileStorage__objects.clear()
-        self.cmd.mock_storage._FileStorage__objects['User.1'] = User(
-            id='1', name='test_user')
-        self.cmd.mock_storage._FileStorage__objects['User.2'] = User(
-            id='2', name='another_test_user')
+        with self.patch_stdout:
+            # Run create User twice
+            self.cmd.onecmd("create User")
+            self.cmd.onecmd("create User")
+            # Clear mock output buffer
+            self.mock_stdout.truncate(0)
+            self.mock_stdout.seek(0)
 
-        # Action: Call the do_count command
-        result = self.cmd.onecmd("count User")
-
-        # Assert: Verify that the output matches the number of instances
-        self.assertEqual(result, "2")
+            # Run count User
+            self.cmd.onecmd("count User")
+            # Ensure captured output is '2'
+            self. assertEqual(self.mock_stdout.getvalue().strip(), '2')
 
 
 if __name__ == '__main__':
