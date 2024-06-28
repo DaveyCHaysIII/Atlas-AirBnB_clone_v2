@@ -114,57 +114,22 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """Create an object of any class"""
-        # Assuming args are already structured by precmd
-        args_parts = args.split()
-
-        if len(args_parts) < 2:
+        """ Create an object of any class"""
+        if not args:
+            print("** class name missing **")
+            return
+        elif args not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        class_name = args_parts[0]
-        params = args_parts[1:]
-
-        if class_name not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-
-        # Initialize the object
-        obj = HBNBCommand.classes[class_name]()
-
-        # Directly handle parameters
-        for param in params:
-            try:
-                key, value = param.split('=')
-                key = key.strip()
-                value = value.strip('"')  # Remove quotes around string values
-                value = value.replace('\\', '\\\\')  # Escape backslashes in strings
-                value = value.replace('_', ' ')  # Replace underscores with spaces in strings
-                if '.' in value:  # Float
-                    value = float(value)
-                elif '.' not in value:  # Integer
-                    value = int(value)
-
-                setattr(obj, key, value)
-            except ValueError:
-                print(f"Invalid parameter format: {param}")
-                continue
-
-        # Save the object to storage
-        obj.save()
-        print(obj.id)
+        new_instance = HBNBCommand.classes[args]()
+        storage.save()
+        print(new_instance.id)
+        storage.save()
 
     def help_create(self):
-        """Help information for the create method"""
-        print("Creates a class of any type.")
-        print("Parameters should be in the format: <key>=<value>")
-        print("Supported value formats:")
-        print("- String: \"<value>\" (e.g., name=\"My House\")")
-        print("- Float: <number>.<decimal> (e.g., price=123.45)")
-        print("- Integer: <number> (default case)")
-        print("Underscores (_) in string values are replaced with spaces.")
-        print("Backslashes (\\) in string values are escaped.")
-        print("Example usage: create BaseModel name=\"My House\" price=123.45 latitude=12.34 longitude=-56.78")
+        """ Help information for the create method """
+        print("Creates a class of any type")
+        print("[Usage]: create <className>\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
