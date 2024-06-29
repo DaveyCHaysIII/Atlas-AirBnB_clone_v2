@@ -137,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
                 key, value = param.split('=')
                 # Remove leading/trailing whitespaces and escape quotes
                 key = key.strip()
-                value = value.strip('"').replace('\\"', '"')
+                value = value.replace('_', ' ').strip('"').replace('\\"', '"')
                 
                 # Convert value to the appropriate type
                 if '.' in value:
