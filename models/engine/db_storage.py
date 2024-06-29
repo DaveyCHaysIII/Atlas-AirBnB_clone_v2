@@ -12,7 +12,7 @@ from models.review import Review
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from models.base_model import BaseModel
+from models.base_model import Base, BaseModel
 
 
 class DBStorage:
@@ -63,7 +63,7 @@ class DBStorage:
     def reload(self):
         """Reload all tables and create the current database session"""
 
-        BaseModel.metadata.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
