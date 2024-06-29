@@ -25,6 +25,23 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
+    @property
+    def file_path(self):
+        """Getter for the file path."""
+        return self.__file_path
+
+    @property
+    def objects(cls):
+        """Getter for the objects dictionary."""
+        return cls.__objects
+
+    def set_file_path(self, path):
+        """setter for the file_path"""
+        if isinstance(path, str):
+            self.__file_path = path
+        else:
+            raise ValueError("file_path must be a string.")
+        
     def all(self, cls=None):
         """
             Returns a dictionary of models currently in storage.
@@ -62,9 +79,12 @@ class FileStorage:
         """Loads storage dictionary from file"""
         # check the json file exists
         if os.path.exists(self.__file_path):
-            with open(self.__file_path, "r", encoding="utf-8") as f:
-                for k, v in json.load(f).items():
-                    self.new(classes[v.get('__class__')](**v))
+            try:
+                with open(self.__file_path, "r", encoding="utf-8") as f:
+                    for k, v in json.load(f).items():
+                        self.new(classes[v.get('__class__')](**v))
+            except json.JSONDecodeError:
+                raise ValueError
 
     def delete(self, obj=None):
         """
