@@ -4,12 +4,17 @@ from sqlalchemy import Column, String, ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship
 from models import storage_t
 from models.base_model import BaseModel, Base
-
+from models.review import Review
 
 class Place(BaseModel, Base):
     """ A place to stay """
     if storage_t == 'db':
         __tablename__ = 'places'
+        reviews = relationship(
+            "Review",
+            backref='place',
+            cascade="all, delete-orphan"
+            )
         city_id = Column(
             String(60),
             ForeignKey('cities.id'),
@@ -71,3 +76,14 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
+        @property
+        def reviews(self):
+            """ getter for cities"""
+            from models import storage
+            review_list = []
+            all_reviews = storage.all(Review)
+            for review in all_reviews.values():
+                if review.place_id == self.id:
+                    review_list.append(review)
+            return review_list
