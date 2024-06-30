@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 import models
 from models.base_model import BaseModel
 from models import storage
@@ -24,7 +25,7 @@ class HBNBCommand(cmd.Cmd):
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
               }
-    dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
+    dot_cmds = ['all', 'count', 'show', 'destroy', 'update', 'create']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
@@ -126,7 +127,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Extracting parameters after the class name
-        params = args.split()[1:]  # Splitting the rest of the arguments into params
+        params = args.split()[0:]  # Splitting the rest of the arguments into params
         if not params:
             print(f"** {class_name} name missing **")
             return
@@ -141,9 +142,9 @@ class HBNBCommand(cmd.Cmd):
                 # Remove leading/trailing whitespaces and escape quotes
                 key = key.strip()
                 value = value.replace('_', ' ').strip('"').replace('\\"', '"')
-                
+                print(f"processing param {key}, {value}")
                 # Convert value to the appropriate type
-                if '.' in value:
+                if re.match(r'^-?\d+\.\d+$', value):
                     value = float(value)
                 elif value.isdigit():
                     value = int(value)

@@ -53,7 +53,7 @@ class Place(BaseModel, Base):
         )
         description = Column(
             String(1024),
-            nullable=False
+            nullable=True
         )
         number_rooms = Column(
             Integer,
@@ -78,12 +78,12 @@ class Place(BaseModel, Base):
         latitude = Column(
             Float,
             default=0,
-            nullable=False
+            nullable=True
         )
         longitude = Column(
             Float,
             default=0,
-            nullable=False
+            nullable=True
         )
 
     else:

@@ -45,7 +45,9 @@ class BaseModel:
                 if k != '__class__':
                     # set all attributes except for class
                     setattr(self, k, v)
-                if 'id' not in kwargs:
+                if k == 'id':
+                    setattr(self, k, v)
+                if not self.id:
                     # supply id if missing
                     self.id = str(uuid.uuid4())
 
