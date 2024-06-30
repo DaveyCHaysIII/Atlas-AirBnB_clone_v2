@@ -127,7 +127,9 @@ class HBNBCommand(cmd.Cmd):
 
         # Extracting parameters after the class name
         params = args.split()[1:]  # Splitting the rest of the arguments into params
-
+        if not params:
+            print(f"** {class_name} name missing **")
+            return
         # Initialize the new instance with the class
         new_instance = HBNBCommand.classes[class_name]()
 
