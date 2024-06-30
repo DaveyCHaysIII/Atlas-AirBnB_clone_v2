@@ -1,15 +1,38 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from sqlalchemy import Column, String, ForeignKey, Integer, Float
+from sqlalchemy import Table, Column, String, ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship
 from models import storage_t
 from models.base_model import BaseModel, Base
 from models.review import Review
+from models.amenity import Amenity
+
+place_amenity = Table('place_amenity',
+                      Base.metadata,
+                      Column(
+                          'place_id',
+                          String(60),
+                          ForeignKey('places.id'),
+                          primary_key=True,
+                          nullable=False
+                          ),
+                      Column(
+                          'amenity_id',
+                          String(60),
+                          ForeignKey('amenities.id'),
+                          primary_key=True,
+                          nullable=False)
+                          )
 
 class Place(BaseModel, Base):
     """ A place to stay """
     if storage_t == 'db':
         __tablename__ = 'places'
+        amenities = relationship(
+            "Amenity",
+            secondary=place_amenity,
+            back_populates="place_amenities"
+            )
         reviews = relationship(
             "Review",
             backref='place',
@@ -79,7 +102,7 @@ class Place(BaseModel, Base):
 
         @property
         def reviews(self):
-            """ getter for cities"""
+            """ getter for reviews"""
             from models import storage
             review_list = []
             all_reviews = storage.all(Review)
@@ -87,3 +110,23 @@ class Place(BaseModel, Base):
                 if review.place_id == self.id:
                     review_list.append(review)
             return review_list
+        
+        @property
+        def amenities(self):
+            """ getter for amenities"""
+            from models import storage
+            amenity_list = []
+            all_amenities = storage.all(Amenity)
+            for amenity in all_amenities.values():
+                if amenity.place_id == self.id:
+                    amenity_list.append(amenity)
+            return amenity_list
+
+        @amenities.setter
+        def amenities(self, value):
+            """Setter for amenities in FileStorage"""
+            if isinstance(value, Amenity):
+                if value.id not in self.amenity_ids:
+                    self.amenity_ids.append(value.id)
+            else:
+                return
