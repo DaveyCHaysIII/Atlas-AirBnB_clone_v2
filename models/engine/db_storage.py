@@ -2,16 +2,16 @@
 """
     This module defines a class to manage database storage for hbnb clone
 """
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 from models.amenity import Amenity
-from models.base_model import Base, BaseModel
+from models.base_model import BaseModel, Base
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-import os
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
 
 
 class DBStorage:
@@ -27,6 +27,7 @@ class DBStorage:
         host = os.getenv('HBNB_MYSQL_HOST', 'localhost')
         database = os.getenv('HBNB_MYSQL_DB')
         env = os.getenv('HBNB_ENV')
+        from models.base_model import BaseModel
 
         self.__engine = create_engine(f'mysql+mysqldb://{user}:{password}@{host}/{database}',
                                       pool_pre_ping=True)
@@ -38,13 +39,22 @@ class DBStorage:
 
     def all(self, cls=None):
         """Query all objects in the current database session"""
+        objs = {}
         if cls:
-            objs = self.__session.query(cls).all()
+            # If class specified, query all objects of that class
+            results = self.__session.query(cls).all()
+            for obj in results:
+                    key = f"{cls.__name__}.{obj.id}"
+                    objs[key] = obj
         else:
-            objs = []
-            for class_ in [User, State, City, Amenity, Place, Review]:  # Import these models
-                objs.extend(self.__session.query(class_).all())
-        return {f'{type(obj).__name__}.{obj.id}': obj for obj in objs}
+            # If no class specified, query objects of all classes
+            classes = [User, State, City, Amenity, Place, Review]
+            for class_ in classes:
+                results = self.__session.query(class_).all()
+                for obj in results:
+                    key = f"{class_.__name__}.{obj.id}"
+                    objs[key] = obj
+        return objs
 
     def new(self, obj):
         """Add the object to the current database session"""
@@ -66,7 +76,3 @@ class DBStorage:
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
-
-# Example models/base_model.py
-
-from sqlalchemy.ext.declarative import declarative_base

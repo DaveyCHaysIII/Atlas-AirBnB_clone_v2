@@ -2,12 +2,11 @@
 """This module defines a base class for all models in our hbnb clone"""
 import uuid
 import models
-from models import storage, storage_t
 from datetime import datetime, timezone
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, DateTime, String
 
-if storage_t == 'db':
+if models.storage_t == 'db':
     Base = declarative_base()
 else:
     Base = object
@@ -15,7 +14,7 @@ else:
 
 class BaseModel:
     """A base class for all hbnb models"""
-    if storage_t == 'db':
+    if models.storage_t == 'db':
         id = Column(
             String(60),
             nullable=False,
