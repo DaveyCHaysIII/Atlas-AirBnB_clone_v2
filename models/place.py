@@ -5,7 +5,6 @@ from sqlalchemy.orm import relationship
 from models import storage_t
 from models.base_model import BaseModel, Base
 from models.review import Review
-from models.amenity import Amenity
 
 place_amenity = Table('place_amenity',
                       Base.metadata,
@@ -115,6 +114,7 @@ class Place(BaseModel, Base):
         def amenities(self):
             """ getter for amenities"""
             from models import storage
+            from models.amenity import Amenity  # Delayed import
             amenity_list = []
             all_amenities = storage.all(Amenity)
             for amenity in all_amenities.values():
@@ -125,6 +125,7 @@ class Place(BaseModel, Base):
         @amenities.setter
         def amenities(self, value):
             """Setter for amenities in FileStorage"""
+            from models.amenity import Amenity  # Delayed import
             if isinstance(value, Amenity):
                 if value.id not in self.amenity_ids:
                     self.amenity_ids.append(value.id)
