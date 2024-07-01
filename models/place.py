@@ -2,38 +2,17 @@
 """ Place Module for HBNB project """
 from sqlalchemy import Table, Column, String, ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship
-from models import storage_t
+import models
 from models.base_model import BaseModel, Base
 from models.review import Review
 
 
 class Place(BaseModel, Base):
     """ A place to stay """
-    if storage_t == 'db':
+    if models.storage_t == 'db':
         __tablename__ = 'places'
-        place_amenity = Table(
-            'place_amenity',
-            Base.metadata,
-            Column(
-                'place_id',
-                String(60),
-                ForeignKey('places.id'),
-                primary_key=True,
-                nullable=False),
-            Column(
-                'amenity_id',
-                String(60),
-                ForeignKey('amenities.id'),
-                primary_key=True,
-                nullable=False))
-        amenities = relationship(
-            "Amenity",
-            secondary=place_amenity,
-            back_populates="place_amenities")
-        reviews = relationship(
-            "Review",
-            backref='place',
-            cascade="all, delete-orphan")
+        
+        
         city_id = Column(
             String(60),
             ForeignKey('cities.id'),
@@ -66,12 +45,35 @@ class Place(BaseModel, Base):
             nullable=False)
         latitude = Column(
             Float,
-            default=0,
             nullable=True)
         longitude = Column(
             Float,
-            default=0,
             nullable=True)
+        
+        amenities = relationship(
+            "Amenity",
+            secondary='place_amenity',
+            back_populates="place_amenities")
+        reviews = relationship(
+            "Review",
+            backref='place',
+            cascade="all, delete-orphan")
+
+        place_amenity = Table(
+            'place_amenity',
+            Base.metadata,
+            Column(
+                'place_id',
+                String(60),
+                ForeignKey('places.id'),
+                primary_key=True,
+                nullable=False),
+            Column(
+                'amenity_id',
+                String(60),
+                ForeignKey('amenities.id'),
+                primary_key=True,
+                nullable=False))
 
     else:
         city_id = ""

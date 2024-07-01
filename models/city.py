@@ -10,10 +10,7 @@ class City(BaseModel, Base):
     """ The city class, contains state ID and name """
     if storage_t == 'db':
         __tablename__ = 'cities'
-        places = relationship(
-            "Place",
-            backref='cities',
-            cascade="all, delete-orphan")
+        
         name = Column(
             String(128),
             nullable=False)
@@ -21,6 +18,11 @@ class City(BaseModel, Base):
             String(60),
             ForeignKey('states.id'),
             nullable=False)
+
+        places = relationship(
+            "Place",
+            backref='cities',
+            cascade="all, delete-orphan")
     else:
         state_id = ''
         name = ''

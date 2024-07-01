@@ -9,20 +9,19 @@ class Review(BaseModel, Base):
     """ Review classto store review information """
     if storage_t == 'db':
         __tablename__ = 'reviews'
+
         place_id = Column(
             String(60),
             ForeignKey('places.id'),
-            nullable=False
-        )
+            nullable=False)
         user_id = Column(
             String(60),
             ForeignKey('users.id'),
-            nullable=False
-        )
+            nullable=False)
         text = Column(
             String(1024),
-            nullable=False
-        )
+            nullable=False)
+
     else:
         place_id = ""
         user_id = ""

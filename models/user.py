@@ -10,30 +10,28 @@ class User(BaseModel, Base):
     from models import storage_t
     if storage_t == 'db':
         __tablename__ = 'users'
+        email = Column(
+            String(128),
+            nullable=False)
+        password = Column(
+            String(128),
+            nullable=False)
+        first_name = Column(
+            String(128),
+            nullable=True)
+        last_name = Column(
+            String(128),
+            nullable=True)
+
         places = relationship(
             "Place",
             backref='user',
-            cascade="all, delete-orphan"
-            )
+            cascade="all, delete-orphan")
         reviews = relationship(
             "Review",
             backref='user',
-            cascade="all, delete-orphan"
-            )
-        email = Column(
-            String(128),
-            nullable=False
-        )
-        password = Column(
-            String(128),
-            nullable=False
-        )
-        first_name = Column(
-            String(128)
-        )
-        last_name = Column(
-            String(128)
-        )
+            cascade="all, delete-orphan")
+
     else:
         email = ''
         password = ''
