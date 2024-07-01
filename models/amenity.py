@@ -7,7 +7,6 @@ from models.base_model import BaseModel, Base
 from models.place import place_amenity
 
 
-
 class Amenity(BaseModel, Base):
     if storage_t == 'db':
         __tablename__ = 'amenities'

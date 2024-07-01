@@ -11,8 +11,8 @@ class User(BaseModel, Base):
     if storage_t == 'db':
         __tablename__ = 'users'
         places = relationship(
-            "Place", 
-            backref='user', 
+            "Place",
+            backref='user',
             cascade="all, delete-orphan"
             )
         reviews = relationship(

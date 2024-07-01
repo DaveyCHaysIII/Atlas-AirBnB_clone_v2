@@ -11,8 +11,8 @@ class City(BaseModel, Base):
     if storage_t == 'db':
         __tablename__ = 'cities'
         places = relationship(
-            "Place", 
-            backref='cities', 
+            "Place",
+            backref='cities',
             cascade="all, delete-orphan")
         name = Column(
             String(128),

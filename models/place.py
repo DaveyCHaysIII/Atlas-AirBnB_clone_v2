@@ -20,8 +20,8 @@ place_amenity = Table('place_amenity',
                           String(60),
                           ForeignKey('amenities.id'),
                           primary_key=True,
-                          nullable=False)
-                          )
+                          nullable=False))
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
