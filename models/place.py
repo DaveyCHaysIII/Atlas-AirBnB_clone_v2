@@ -11,8 +11,7 @@ class Place(BaseModel, Base):
     """ A place to stay """
     if models.storage_t == 'db':
         __tablename__ = 'places'
-        
-        
+
         city_id = Column(
             String(60),
             ForeignKey('cities.id'),
@@ -49,7 +48,7 @@ class Place(BaseModel, Base):
         longitude = Column(
             Float,
             nullable=True)
-        
+
         amenities = relationship(
             "Amenity",
             secondary='place_amenity',
