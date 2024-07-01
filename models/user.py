@@ -29,7 +29,7 @@ class User(BaseModel, Base):
             nullable=False
         )
         first_name = Column(
-            String(128),
+            String(128)
         )
         last_name = Column(
             String(128)
