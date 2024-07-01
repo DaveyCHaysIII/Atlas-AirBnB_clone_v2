@@ -2,14 +2,14 @@
 """ Place Module for HBNB project """
 from sqlalchemy import Table, Column, String, ForeignKey, Integer, Float
 from sqlalchemy.orm import relationship
-import models
+from models import storage_t
 from models.base_model import BaseModel, Base
 from models.review import Review
 
 
 class Place(BaseModel, Base):
     """ A place to stay """
-    if models.storage_t == 'db':
+    if storage_t == 'db':
         __tablename__ = 'places'
         place_amenity = Table('place_amenity',
                     Base.metadata,
