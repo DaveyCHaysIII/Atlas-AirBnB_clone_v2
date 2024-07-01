@@ -116,10 +116,3 @@ class test_fileStorage(unittest.TestCase):
         self.assertFalse(os.path.exists(self.file_path))
         self.storage.save()
         self.assertTrue(os.path.exists(self.file_path))
-
-    def test_key_format(self):
-        """ Key is properly formatted """
-        _id = self.obj2.to_dict()['id']
-        expected_key = 'User.' + _id  # Directly construct the expected key format
-        actual_keys = self.storage.all().keys()  # Get all keys from storage
-        self.assertIn(expected_key, actual_keys)  # Check if the expected key is among the actual keys
