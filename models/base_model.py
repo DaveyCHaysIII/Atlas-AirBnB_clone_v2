@@ -47,9 +47,14 @@ class BaseModel:
                     setattr(self, k, v)
                 if k == 'id':
                     setattr(self, k, v)
-                if not self.id:
+                if 'id' not in kwargs:
                     # supply id if missing
                     self.id = str(uuid.uuid4())
+                if 'created_at' not in kwargs:
+                    # supply created_at and updated_at if missing
+                    self.created_at = datetime.now(timezone.utc)
+                    self.updated_at = datetime.now(timezone.utc)
+
 
     def __str__(self):
         """Returns a string representation of the instance"""
