@@ -127,7 +127,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Extracting parameters after the class name
-        params = args.split()[0:]  # Splitting the rest of the arguments into params
+        params = args.split()[0:]
         if not params:
             print(f"** {class_name} name missing **")
             return
