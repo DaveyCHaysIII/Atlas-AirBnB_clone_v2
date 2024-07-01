@@ -55,7 +55,6 @@ class BaseModel:
                     self.created_at = datetime.now(timezone.utc)
                     self.updated_at = datetime.now(timezone.utc)
 
-
     def __str__(self):
         """Returns a string representation of the instance"""
         return '[{}] ({}) {}'.format(
