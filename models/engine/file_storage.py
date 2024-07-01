@@ -41,7 +41,7 @@ class FileStorage:
             self.__file_path = path
         else:
             raise ValueError("file_path must be a string.")
-        
+
     def all(self, cls=None):
         """
             Returns a dictionary of models currently in storage.

@@ -19,7 +19,6 @@ class DBStorage:
     __engine = None
     __session = None
 
-
     def __init__(self):
         """Initialize the database engine and session"""
         user = os.getenv('HBNB_MYSQL_USER')
@@ -29,8 +28,9 @@ class DBStorage:
         env = os.getenv('HBNB_ENV')
         from models.base_model import BaseModel
 
-        self.__engine = create_engine(f'mysql+mysqldb://{user}:{password}@{host}/{database}',
-                                      pool_pre_ping=True)
+        self.__engine = create_engine(
+            f'mysql+mysqldb://{user}:{password}@{host}/{database}',
+            pool_pre_ping=True)
 
         if env == 'test':
             BaseModel.metadata.drop_all(self.__engine)
@@ -44,8 +44,8 @@ class DBStorage:
             # If class specified, query all objects of that class
             results = self.__session.query(cls).all()
             for obj in results:
-                    key = f"{cls.__name__}.{obj.id}"
-                    objs[key] = obj
+                key = f"{cls.__name__}.{obj.id}"
+                objs[key] = obj
         else:
             # If no class specified, query objects of all classes
             classes = [User, State, City, Amenity, Place, Review]
@@ -73,6 +73,7 @@ class DBStorage:
         """Reload all tables and create the current database session"""
 
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
