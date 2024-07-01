@@ -219,7 +219,7 @@ class HBNBCommand(cmd.Cmd):
         if not c_id:
             print("** instance id missing **")
             return
-        
+
         cls = HBNBCommand.classes.get(c_name)
         objs = storage.all(cls)
         key = f"{c_name}.{c_id}"
