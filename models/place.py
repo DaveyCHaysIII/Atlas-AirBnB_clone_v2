@@ -75,8 +75,6 @@ class Place(BaseModel, Base):
             backref='place',
             cascade='all, delete-orphan')
 
-        
-
     else:
         city_id = ""
         user_id = ""
