@@ -29,7 +29,11 @@ class HBNBCommand(cmd.Cmd):
     types = {
              'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
+             'latitude': float, 'longitude': float,
+             'name': str, 'state_id': str, 'city_id': str,
+             'user_id': str, 'email': str, 'password': str,
+             'first_name': str, 'last_name': str,
+             'description': str, 'text': str, 'place_id': str
             }
 
     def preloop(self):
@@ -142,7 +146,6 @@ class HBNBCommand(cmd.Cmd):
                 # Remove leading/trailing whitespaces and escape quotes
                 key = key.strip()
                 value = value.replace('_', ' ').strip('"').replace('\\"', '"')
-                print(f"processing param {key}, {value}")
                 # Convert value to the appropriate type
                 if re.match(r'^-?\d+\.\d+$', value):
                     value = float(value)
