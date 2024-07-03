@@ -18,13 +18,13 @@ class Place(BaseModel, Base):
             Column(
                 'place_id',
                 String(60),
-                ForeignKey('places.id'),
+                ForeignKey('places.id', ondelete='CASCADE'),
                 primary_key=True,
                 nullable=False),
             Column(
                 'amenity_id',
                 String(60),
-                ForeignKey('amenities.id'),
+                ForeignKey('amenities.id', ondelete='CASCADE'),
                 primary_key=True,
                 nullable=False))
 
@@ -69,6 +69,7 @@ class Place(BaseModel, Base):
             'Amenity',
             secondary='place_amenity',
             back_populates='place_amenities',
+            cascade='all, delete-orphan',
             viewonly=False)
         reviews = relationship(
             'Review',

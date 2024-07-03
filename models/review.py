@@ -12,11 +12,11 @@ class Review(BaseModel, Base):
 
         place_id = Column(
             String(60),
-            ForeignKey('places.id'),
+            ForeignKey('places.id', ondelete='CASCADE'),
             nullable=False)
         user_id = Column(
             String(60),
-            ForeignKey('users.id'),
+            ForeignKey('users.id', ondelete='CASCADE'),
             nullable=False)
         text = Column(
             String(1024),

@@ -127,3 +127,14 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 <br>
+
+create State name="Oklahoma" id="bc291600-cf52-4684-ba9a-284939fb0754"
+create City name="Tulsa" state_id="bc291600-cf52-4684-ba9a-284939fb0754" id="22513375-576d-4201-990d-2b1a5b26f3bd"
+create User first_name="Ryan" last_name"Styles" email="we@google.com" password="pwd" id="ccf306cd-50e4-455b-881d-913e2a9bb001"
+create Place name="Atlas" city_id="22513375-576d-4201-990d-2b1a5b26f3bd" user_id="ccf306cd-50e4-455b-881d-913e2a9bb001" description="Best School" number_rooms="55" number_bathrooms="55" max_guests="55" price_by_night="55" id="d402b134-895c-466c-bc21-335fda055eca"
+create Review place_id="d402b134-895c-466c-bc21-335fda055eca" user_id="ccf306cd-50e4-455b-881d-913e2a9bb001" text="its ok i guess" id="7c2fea55-ad5c-45c5-9782-de1306d965c7"
+create Amenity name="wifi" id="cbc39006-2ff1-48ff-a30f-cc6c78b39351"
+
+show mysql
+
+destroy State bc291600-cf52-4684-ba9a-284939fb0754
