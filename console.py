@@ -262,7 +262,7 @@ class HBNBCommand(cmd.Cmd):
         print("Shows all objects, or all of a class")
         print("[Usage]: all <className>\n")
 
-    def do_count(self, args): 
+    def do_count(self, args):
         """Count current number of class instances"""
         # Assuming 'args' is the class name as a string, e.g., 'Place'
         count = 0
@@ -292,7 +292,7 @@ class HBNBCommand(cmd.Cmd):
             return
         else:
             cls = HBNBCommand.classes[c_name]
-        
+
         # validate object
         obj_key = f"{c_name}.{obj_id}"
         if obj_key not in storage.all(cls).keys():
@@ -300,7 +300,7 @@ class HBNBCommand(cmd.Cmd):
             return
         else:
             obj = storage.all(cls)[obj_key]
-        
+
         # validate attribute name and type
         if att_name not in HBNBCommand.types:
             print(f"** attribute does not exist: {att_name} **")
