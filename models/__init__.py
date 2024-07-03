@@ -3,7 +3,6 @@
 
 import os
 
-
 storage_t = os.getenv('HBNB_TYPE_STORAGE')
 
 if storage_t == 'db':
