@@ -255,7 +255,7 @@ class HBNBCommand(cmd.Cmd):
             obj_dict = models.storage.all()
 
         for key, obj in obj_dict.items():
-            print(f"{key}: {obj}")
+            print(f"{key}: {obj.to_dict()}")
 
     def help_all(self):
         """ Help information for the all command """
