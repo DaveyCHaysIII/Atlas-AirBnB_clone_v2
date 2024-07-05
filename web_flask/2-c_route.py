@@ -1,0 +1,26 @@
+#!/usr/bin/python3
+"""Write a script that starts a Flask web application
+two routes, / and /hbnb"""
+from flask import Flask, escape
+
+app = Flask(__name__)
+
+
+@app.route("/", strict_slashes=False)
+def hello_world():
+    return "Hello HBNB!"
+
+
+@app.route("/hbnb", strict_slashes=False)
+def hello_world_hbnb():
+    return "HBNB"
+
+
+@app.route("/c/<text>", strict_slashes=False)
+def hello_world_c(text):
+    formatted_text = escape(text).replace('_', ' ')
+    return f"C {formatted_text}"
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
