@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Write a script that starts a Flask web application
-two routes, / and /hbnb"""
+three routes, / , /hbnb, and /c/<text>"""
 from flask import Flask, escape
 
 app = Flask(__name__)
@@ -8,16 +8,19 @@ app = Flask(__name__)
 
 @app.route("/", strict_slashes=False)
 def hello_world():
+    """adds the / route"""
     return "Hello HBNB!"
 
 
 @app.route("/hbnb", strict_slashes=False)
 def hello_world_hbnb():
+    """adds the /hbnb route"""
     return "HBNB"
 
 
 @app.route("/c/<text>", strict_slashes=False)
 def hello_world_c(text):
+    """adds the /c/<text> route, with sanitization"""
     formatted_text = escape(text).replace('_', ' ')
     return f"C {formatted_text}"
 
