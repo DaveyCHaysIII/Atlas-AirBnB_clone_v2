@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""Write a script that starts a Flask web application"""
+"""Write a script that starts a Flask web application
+two routes, / and /hbnb"""
 from flask import Flask
 
 app = Flask(__name__)
@@ -11,7 +12,7 @@ def hello_world():
 
 
 @app.route("/hbnb", strict_slashes=False)
-def hello_world():
+def hello_world_hbnb():
     return "HBNB"
 
 
