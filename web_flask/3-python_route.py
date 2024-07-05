@@ -26,10 +26,11 @@ def hello_world_c(text):
     return f"C {formatted_text}"
 
 
+@app.route("/python/", defaults={'text', 'is cool'}, strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
-def hello_world_Python(text="is cool"):
+def hello_world_Python(text):
     """adds the /Python/<text> route, with sanitization"""
-    formatted_text = escape(text).replace('_', ' ')
+    formatted_text = escape(text).replace('_', ' ') if text else 'is cool'
     return f"Python {formatted_text}"
 
 
