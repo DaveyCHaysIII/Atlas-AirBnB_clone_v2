@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """Write a script that starts a Flask web application
 three routes, / , /hbnb, and /c/<text>"""
-from flask import Flask, escape
+from flask import Flask
+from markupsafe import escape
 
 app = Flask(__name__)
 
