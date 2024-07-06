@@ -166,3 +166,4 @@ cython_debug/
 
 # a test file 
 main_place_amenities.py
+main.py

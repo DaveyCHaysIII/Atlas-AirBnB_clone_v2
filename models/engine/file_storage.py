@@ -95,3 +95,7 @@ class FileStorage:
             k = f"{obj.__class__.__name__}.{obj.id}"
             if k in self.__objects:
                 del self.__objects[k]
+
+    def close(self):
+        """calls reload for reasons that escape me"""
+        self.reload()
