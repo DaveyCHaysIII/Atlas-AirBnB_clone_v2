@@ -37,7 +37,7 @@ def hello_world_Python(text='is cool'):
 @app.route("/number/<n>", strict_slashes=False)
 def hello_world_n(n):
     """adds the /number/<n> route, with sanitization"""
-    if isinstance(n, int):
+    if n.isnumeric():
         return f"{n} is a number"
 
 
