@@ -77,6 +77,8 @@ def render_states():
 def render_cities_by_state():
     """renders cities and states from db to route /cities_by_state"""
     states = storage.all(State).values()
+    for state in states:
+        state.cities.sort(key=lambda city: city.name)
     sorted_states = sorted(states, key=lambda state: state.name)
     return render_template('8-cities_by_states.html', states=sorted_states)
 
