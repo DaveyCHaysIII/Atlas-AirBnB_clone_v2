@@ -6,6 +6,7 @@ FROM BASE REPO
 """
 from models import storage
 from models.state import State
+from models.city import City
 from flask import Flask, render_template
 from markupsafe import escape
 
@@ -68,11 +69,41 @@ def teardown_db(exception):
 
 
 @app.route("/states_list", strict_slashes=False)
-def render_states():
+def render_states_list():
     """renders states from db to route /states_list """
     states = storage.all(State).values()
     sorted_states = sorted(states, key=lambda state: state.name)
     return render_template('7-states_list.html', states=sorted_states)
+
+
+@app.route("/cities_by_states", strict_slashes=False)
+def render_cities_by_state():
+    """renders cities and states from db to route /cities_by_state"""
+    states = storage.all(State).values()
+    for state in states:
+        state.cities.sort(key=lambda city: city.name)
+    sorted_states = sorted(states, key=lambda state: state.name)
+    return render_template('8-cities_by_states.html', states=sorted_states)
+
+
+@app.route("/states", strict_slashes=False)
+def render_states():
+    """renders states from db to route /states"""
+    states = storage.all(State).values()
+    sorted_states = sorted(states, key=lambda state: state.name)
+    return render_template('7-states_list.html', states=sorted_states)
+
+
+@app.route("/states/<id>", strict_slashes=False)
+def render_states_id(id):
+    """renders state.id from db to route /states/<id>"""
+    states = storage.all(State).values()
+    selected_state = "not found!"
+    for state in states:
+        if str(state.id) == id:
+            selected_state = state
+            break
+    return render_template("9-states.html", state=selected_state)
 
 
 if __name__ == "__main__":
