@@ -7,6 +7,7 @@ FROM BASE REPO
 from models import storage
 from models.state import State
 from models.city import City
+from models.amenity import Amenity
 from flask import Flask, render_template
 from markupsafe import escape
 
@@ -104,6 +105,18 @@ def render_states_id(id):
             selected_state = state
             break
     return render_template("9-states.html", state=selected_state)
+
+
+@app.route("/hbnb_filters", strict_slashes=False)
+def render_states_and_amenities():
+    states = storage.all(State).values()
+    amenities = storage.all(Amenity).values()
+    for state in states:
+        state.cities.sort(key=lambda city: city.name)
+    sorted_states = sorted(states, key=lambda state: state.name)
+    return render_template("10-hbnb_filters.html",
+                           states=sorted_states,
+                           amenities=amenities)
 
 
 if __name__ == "__main__":
