@@ -19,13 +19,12 @@
 				<button>Search</button>
 				<div class="locations">
 					<h3>States</h3>
-					<h4>&nbsp;</h4>
 					<ul class="popover">
 						{% for state in states %}
 						<li><h2>{{ state.name }}</h2></li>
 						<UL>
 							{% for city in state.cities %}
-								<li><b>{{ city.name }}<b><li>
+								<li><h4><b>&nbsp;{{ city.name }}</b></h4><li>
 							{% endfor %}
 						</UL>
 					{% endfor %}
@@ -33,10 +32,9 @@
 				</div>
 				<div class="amenities">
 					<h3>Amenities</h3>
-					<h4>&nbsp;</h4>
 					<ul class="popover">
 					{% for amenity in amenities %}
-						<li><b>{{ amenity.name }}</b></li>
+					<li><h4><b>&nbsp;{{ amenity.name }}</b></h4><li>
 					{% endfor %}
 					</ul>
 				</div>
